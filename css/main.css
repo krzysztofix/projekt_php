@@ -11,3 +11,9 @@ and open the template in the editor.
 .navbar a{
         color: #bd2130;
 }
+/*
+.navbar-nav li:hover>.dropdown-menu
+{
+	display: block;
+}
+*/
