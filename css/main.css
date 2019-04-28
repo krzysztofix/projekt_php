@@ -17,3 +17,26 @@ and open the template in the editor.
 	display: block;
 }
 */
+.navbar {
+    border-style:  ridge;
+    border-radius: 15px;
+    background-image: linear-gradient(rgba(10,106,15,0.2),rgba(32,32,48,0.5));
+    margin: 2% 2% 3%;
+}
+body{
+    background-image: linear-gradient(to right,rgba(53,99,252,1),rgba(255,255,255,1));
+    
+}
+.navbar ul{
+    text-align: center;
+}
+footer {
+   text-align: center;
+   position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+footer a{  
+    color: #000
+}

@@ -20,28 +20,32 @@ and open the template in the editor.
         <header>          
             <?php 
                 drukuj_menu();
+                include_once "klasy/PomocnikBD.php";
+                include_once "klasy/UserManager.php";
+                $db = new PomocnikBD("localhost", "root", "", "glowna");
+                $userManager = new UserManager();
             ?>
         </header>
         <main>
-            <div class ='container'>
-                <div class='row'>
-                    <div class ='col-sm-6 col-md-4'>
-                        Nazywam się Krzysztof Litman jestem ....////ilka słów o mnie
-                    </div>
-                    <div class='col-sm-6 col-md-4'>
-                        Moje zainteresowania
-                    </div>
-                    <div class='col-sm-12 col-md-4'>
-                        Ulubione technologie
-                    </div>
-                    <div class='col-sm-12 col-md-6'>
-                        ulubione technologie
-                    </div>
-                    <div class='col-sm-12 col-md-6'>
-                        Kontakt         
-                    </div>
-                </div>
-            </div>
+        <?php    
+        
+            if (filter_input(INPUT_POST, "login")) {
+                $userId=$userManager->login($db); //sprawdź parametry logowania
+                if ($userId > 0) {
+                echo "<p>Poprawne logowanie.<br />";
+                echo "Zalogowany użytkownik o id=$userId <br />";
+                //pokaż link wyloguj
+                //lub przekieruj użytkownika na inną stronę dla zalogowanych
+                echo "<a href='processLogin.php?akcja=wyloguj' >Wyloguj</a> </p>";
+                } else {
+                echo "<p>Błędna nazwa użytkownika lub hasło</p>";
+                $userManager->login_form(); //Pokaż formularz logowania
+                }
+            } else {
+                //pierwsze uruchomienie skryptu processLogin
+                $userManager->login_form();
+            }
+            ?>
         </main>
         <footer>
             <a href="zaloguj.php">Panel aministratora</a>
@@ -56,3 +60,5 @@ and open the template in the editor.
 	<script src="js/bootstrap.min.js"></script>
     </body>
 </html>
+
+
