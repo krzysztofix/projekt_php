@@ -6,44 +6,39 @@ and open the template in the editor.
 -->
     <?php 
         include_once('funkcje.php');
-    ?>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel = "stylesheet" href ="css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel = "stylesheet" href ="css/main.css">  
-        <title>Moja strona</title>
-    </head>
-    <body>
-        <header>          
+    ?>      
             <?php 
                 drukuj_menu();
                 include_once "klasy/PomocnikBD.php";
                 include_once "klasy/UserManager.php";
                 $db = new PomocnikBD("localhost", "root", "", "glowna");
-                $userManager = new UserManager();
+                //$userManager = new UserManager();
+                session_start();
             ?>
-        </header>
         <main>
         <?php    
         
             if (filter_input(INPUT_POST, "login")) {
-                $userId=$userManager->login($db); //sprawdź parametry logowania
-                if ($userId > 0) {
-                echo "<p>Poprawne logowanie.<br />";
-                echo "Zalogowany użytkownik o id=$userId <br />";
-                //pokaż link wyloguj
-                //lub przekieruj użytkownika na inną stronę dla zalogowanych
-                echo "<a href='processLogin.php?akcja=wyloguj' >Wyloguj</a> </p>";
+                $args = [
+                        'name' => FILTER_SANITIZE_MAGIC_QUOTES,
+                        'password' => FILTER_SANITIZE_MAGIC_QUOTES
+                    ];
+                $dane = filter_input_array(INPUT_POST, $args);
+                //sprawdź czy użytkownik o loginie istnieje w tabeli users
+                //i czy podane hasło jest poprawne
+                $login =  $dane['name'];
+                $password = $dane['password'];
+                $userManager = new UserManager($login,$password);
+                $userId=$userManager->login($login,$password,$db,'administrator'); //sprawdź parametry logowania
+                if ($userId != null) {
+                    header("Location: panel.php"); 
                 } else {
                 echo "<p>Błędna nazwa użytkownika lub hasło</p>";
                 $userManager->login_form(); //Pokaż formularz logowania
                 }
             } else {
                 //pierwsze uruchomienie skryptu processLogin
-                $userManager->login_form();
+                UserManager::login_form();
             }
             ?>
         </main>

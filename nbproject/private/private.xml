@@ -5,10 +5,10 @@
         <group>
             <file>file:/C:/xampp/htdocs/PhpProject1/klasy/UserManager.php</file>
             <file>file:/C:/xampp/htdocs/PhpProject1/funkcje.php</file>
-            <file>file:/C:/xampp/htdocs/PhpProject1/klasy/panel.php</file>
             <file>file:/C:/xampp/htdocs/PhpProject1/css/main.css</file>
             <file>file:/C:/xampp/htdocs/PhpProject1/index.php</file>
             <file>file:/C:/xampp/htdocs/PhpProject1/klasy/PomocnikBD.php</file>
+            <file>file:/C:/xampp/htdocs/PhpProject1/panel.php</file>
             <file>file:/C:/xampp/htdocs/PhpProject1/zaloguj.php</file>
         </group>
     </open-files>

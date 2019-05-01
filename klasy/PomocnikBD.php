@@ -43,7 +43,7 @@ class PomocnikBD {
             while ($row = $result->fetch_object()) {
                 $tresc.="<tr>";
                 for ($i = 0; $i < $ilepol; $i++) {
-                    $p = $pola[$i];
+                    $p = $pola[$i];               
                     $tresc.="<td>" . $row->$p . "</td>";
                 }
                 $tresc.="</tr>";
@@ -54,7 +54,13 @@ class PomocnikBD {
         return $tresc;
     }
     public function insert($sql) {
-    // uzupełnij zapytanie – i zwróć true lub false
+        if($this->mysqli->query($sql)){
+            echo "brawo dodałeś użytnika";
+        }
+        else {
+            echo 'nie udalo sie dodac';
+            echo $this->mysqli->error;
+        }
     }
     public function delete($sql) {
     // uzupełnij zapytanie – i zwróć true lub false
@@ -72,12 +78,37 @@ class PomocnikBD {
                     $hash = $row->password; //pobierz zahaszowane hasło użytkownika
                     //sprawdź czy pobrane hasło pasuje do tego z tabeli bazy danych:
                     if (password_verify($passwd, $hash)){
+                        echo 'preszlo weryfikacje';
                         $id = $row->id; //jeśli hasła się zgadzają - pobierz id użytkownika
                     }
                 }
             }
                 return $id; //id zalogowanego użytkownika(>0) lub -1
            }
+    public function selectDel($sql, $pola) {
+        //parametr $sql – łańcuch zapytania select
+        //parametr $pola - tablica z nazwami pol w bazie 
+        //Wynik funkcji – kod HTML tabeli z rekordami (String)
+        $tresc = "";
+        if ($result = $this->mysqli->query($sql)) {
+            $ilepol = count($pola); //ile pól
+            $ile = $result->num_rows; //ile wierszy
+            // pętla po wyniku zapytania $results
+            $tresc.="<table class='table'><tbody>";
+            while ($row = $result->fetch_object()) {
+                $tresc.="<tr>";
+                for ($i = 0; $i < $ilepol; $i++) {
+                    $p = $pola[$i];               
+                    $tresc.="<td>" . $row->$p . "</td>";
+                }
+                $tresc.="<td><button class='btn btn-danger'>Usuń</button></td>";
+                $tresc.="</tr>";
+            }
+            $tresc.="</table></tbody>";
+            $result->close(); /* zwolnij pamięć */
+        }
+        return $tresc;
+    }
 } //koniec klasy Baza
 
 
